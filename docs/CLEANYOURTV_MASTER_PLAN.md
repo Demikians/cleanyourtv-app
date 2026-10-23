@@ -170,3 +170,14 @@ Every new request is recorded here before implementation. Keep a short checklist
 ### Current audit status
 - Confirmed source/UI mapping is documented; data source and location flow remain unresolved.
 - No implementation changes have been made. No build or tests have been run.
+
+
+### Locked source decision — 2026-10-23 (user approved)
+- **Prayer-time calculation provider:** Aladhan Prayer Times API.
+- **Calculation method:** `method=20` (Aladhan labels this KEMENAG — Kementerian Agama Republik Indonesia).
+- **Asr school:** `school=0` (Shafi/standard), unless later validation demonstrates the target schedule requires a different setting and the user approves the change.
+- Use the selected/detected location's coordinates for the request where available; do not rely on a hard-coded city or the upstream add-on's Casablanca defaults.
+- Do not change the TV system clock/time zone when a prayer location is selected. Use the device's local time context consistently for countdown and date boundaries.
+- Cache the last valid response and show a clear stale/unavailable state if refresh fails; never fabricate a schedule.
+- Important limitation: method 20 identifies Aladhan's calculation method, not a guarantee that every returned time exactly matches the published local Kemenag table. Validate representative dates/locations during testing and disclose any discrepancies; do not claim exact official-table equivalence without evidence.
+- Reference: Aladhan API docs list method 20 as KEMENAG and warn that computed timings may not always match local mosque/government authority schedules: https://aladhan.com/prayer-times-api and https://aladhan.com/calculation-methods
