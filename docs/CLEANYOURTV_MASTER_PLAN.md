@@ -181,3 +181,10 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Cache the last valid response and show a clear stale/unavailable state if refresh fails; never fabricate a schedule.
 - Important limitation: method 20 identifies Aladhan's calculation method, not a guarantee that every returned time exactly matches the published local Kemenag table. Validate representative dates/locations during testing and disclose any discrepancies; do not claim exact official-table equivalence without evidence.
 - Reference: Aladhan API docs list method 20 as KEMENAG and warn that computed timings may not always match local mosque/government authority schedules: https://aladhan.com/prayer-times-api and https://aladhan.com/calculation-methods
+
+
+### Submodule pin verification — 2026-10-23
+- The app repository's `third_party/cleanyourtv` gitlink currently pins upstream commit `9071ec8d2f41826778f6b4c7f5f42dadc22f5b22`.
+- `.gitmodules` confirms the source URL is `https://github.com/Gathin23/cleanyourtv.git`.
+- The prior UI inspection read upstream `main`; this is not yet proof that the pinned commit has identical contents. Before editing, compare the pinned commit against upstream `main` and target the intended project-owned fork/branch rather than pushing directly to upstream `main`.
+- The app repository currently exposes only the `main` branch. No launcher source files have been edited.
