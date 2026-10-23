@@ -42,7 +42,7 @@ Widgets, in this order:
 Do not invent prayer times, Quran text, translations, or references. If data is unavailable, show a clear status instead of fabricated content.
 
 ### Clock and date
-- Show clock and date in the agreed screen area (reference: top-right).
+- Clock/date may remain in the left-side block; top-right placement is not mandatory. Keep them compact and visually quiet, with the small calendar close to the clock/date. The clock/date must not dominate the wallpaper-led layout.
 - Clock updates automatically from the TV/device system time.
 - Date updates automatically.
 - A prayer-location selection must **not silently change the device clock or system time zone**. Keep display time tied to system time unless a separate, explicitly approved time-setting feature is defined.
@@ -109,6 +109,7 @@ Unless the user approves a change after the audit, do not alter:
 - **2026-10-23 — Location:** automatic device location when supported; manual city/location fallback when unavailable or permission/detection fails.
 - **2026-10-23 — Prayer-time reference:** Kemenag RI; verify the actual data source/method before implementation.
 - **2026-10-23 — Clock/date:** automatic from device system time; selecting prayer location must not silently alter system time/time zone.
+- **2026-10-23 — Clock/date layout refinement (user-approved):** left-side placement is acceptable; clock/date should be small/compact and visually quiet, with the small calendar nearby. Top-right placement is no longer mandatory.
 - **2026-10-23 — Release gate:** no APK build until explicit user phrase “FIX JADI” after all agreed work is complete.
 
 ## 10. Change-control rule
