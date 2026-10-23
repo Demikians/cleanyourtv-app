@@ -210,3 +210,10 @@ Every new request is recorded here before implementation. Keep a short checklist
 3. Verify Quran source, Indonesian translation license/attribution, API availability, offline cache and daily rotation semantics.
 4. Prepare a concrete file-by-file diff plan with test cases before source edits.
 5. No source files have been edited. No build, tests, or APK packaging have been run.
+
+
+### Quran data-source research update — 2026-10-23
+- Kemenag's official Qur'an API provides Qur'anic text, Indonesian translation (2019 edition), and tafsir, but its published access process requires registration, a formal request, activation/token, and a follow-up survey before endpoint access. This is the preferred authority if access can be obtained, but do not assume credentials are available.
+- The MyQuran API v3 documentation advertises Arabic text, Indonesian translation, and Kemenag short/long tafsir in its response schema and says its prayer schedule source is Kemenag. It is a potential integration candidate, but this audit has not yet verified production availability, terms/attribution, rate limits, or whether its translation content is appropriate for the requested daily verse widget.
+- QuranEnc provides an Indonesian translation identified as the Ministry of Religious Affairs translation and documents a public JSON endpoint; its reuse terms require no modification and attribution/version details. This is a fallback candidate only after validating the precise translation version, Arabic text source, and attribution fit.
+- No Quran API/provider is locked yet. Next step is to validate the candidate endpoint and response shape, confirm usage terms and cache behavior, then choose the lightest reliable source. Do not embed private API credentials in the launcher APK.
