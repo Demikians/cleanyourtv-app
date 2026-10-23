@@ -262,3 +262,12 @@ Every new request is recorded here before implementation. Keep a short checklist
 - User-approved clock/date refinement: left-side placement is acceptable; compactness and minimalism matter more than moving the clock to the right.
 - Implemented a narrow layout change on launcher branch `feature/forest-green-home-widgets`, commit `d814a876fede775dd730b39a0088f4013f53b77a`: clock font 52sp→38sp, AM/PM 15sp→12sp, date 14sp→12sp, calendar title 11sp→10sp, and reduced related spacing. This has not yet had CI verification; check the new commit's workflow before treating it as validated.
 - No APK built; no PR merge. Actual Android TV visual testing remains outstanding.
+
+
+### Execution update — 2026-10-23 (compact clock CI and timezone audit)
+- Verified commit `d814a876fede775dd730b39a0088f4013f53b77a` on `feature/forest-green-home-widgets`: workflow `CI` run `39990601896` and `Overdrive source validation` run `39990602061` both completed with conclusion `success`. Their Android unit-test/lint jobs passed; the lists/tools/docs job passed. APK assembly was not run.
+- Correction to the previous note: compact-clock CI is now verified successful; it was pending at the time the earlier note was written.
+- Continued source audit of `DemiPanel.java`: the Aladhan request passes `ZoneId.systemDefault()` as `timezonestring`, while the prayer widget uses `LocalDate.now()` and `LocalTime.now()` from the device zone for the schedule date and Maghrib countdown. This preserves the Android system timezone, but it can misalign prayer-time display/countdown when the manually selected location is in a different timezone than the TV. Do not silently change the system timezone; next investigate a narrow location-zone-aware calculation and add tests before editing.
+- Quran display currently attributes text only to “MyQuran API v3”; the source audit has not yet established the translation edition/version and reuse attribution requirements. Keep this as an unresolved verification item; do not imply the translation license is confirmed.
+- Current location detection remains best-effort last-known location only when fine-location permission is already granted; no runtime permission prompt is implemented. Manual city selection remains the fallback. This needs clear status/target-TV validation, not a fabricated “auto detected” claim.
+- No APK built, no PR merged. Target Android TV visual/runtime validation and genuine screenshot remain outstanding. Release gate unchanged: no APK until explicit user phrase `FIX JADI`.
