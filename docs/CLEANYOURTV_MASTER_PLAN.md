@@ -158,3 +158,15 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Research and verify a usable Kemenag RI schedule source/method and the daily Quran verse source; establish attribution, network/cache policy, and city resolution before choosing APIs.
 - Check existing tests and build scripts, then prepare an exact diff plan and dependency graph.
 - No source code has been edited, no build/test has been run, and no APK has been built during this audit.
+
+
+### Data-source research update — 2026-10-23
+- SIHAT's developer page describes a Kemenag prayer-schedule API, but access requires an application, an approved token, and registered/allowlisted IP address; every displayed schedule must cite Kementerian Agama RI. Therefore direct SIHAT API integration is not plug-and-play and cannot be assumed available without credentials and approval. Reference: https://sihat.kemenag.dev/pengembang
+- SIHAT's public schedule page offers location selection and states its calculation uses Kemenag's standard method. This is a useful official-facing reference for validating schedule semantics, but the current audit has not established a stable, permitted direct machine-readable endpoint suitable for this TV app. Reference: https://sihat.kemenag.dev/jadwal-salat
+- A third-party API Indonesia product documents Kemenag-sourced prayer schedules for 514 regencies/cities, but it requires a user-owned API key and paid credits after a one-time signup bonus. Do not embed a private key in the public TV APK. It is not yet approved as the project data source. Reference: https://docs.apiindonesia.id/
+- Quran Edge API documents Arabic text, Indonesian translations, and Tafsir Kemenag RI with no API key and an MIT-licensed API service. It appears a plausible candidate for verse content, but the endpoint/schema, source dataset provenance, usage stability, and attribution need a small verification test before adoption. Reference: https://quran.dyzulk.com/
+- Decision: no endpoint or API provider is locked yet. Prioritize an approach that does not require shipping private credentials inside the APK; use a persistent cache and clear stale/unavailable status. The widget must not falsely label a third-party schedule as direct official data unless the data provenance and method are verified.
+
+### Current audit status
+- Confirmed source/UI mapping is documented; data source and location flow remain unresolved.
+- No implementation changes have been made. No build or tests have been run.
