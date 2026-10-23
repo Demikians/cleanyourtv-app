@@ -246,3 +246,10 @@ Every new request is recorded here before implementation. Keep a short checklist
 - A newer workflow is running for commit `19a4abe8f4234f90eeabe22412d09476db6a379e`; check its final result before treating the current config changes as fully verified.
 - Previous legacy CI run produced a 482 KB release APK and failed its 480 KB size gate. That run used an older workflow; the current PR workflow does not assemble APKs. Do not build an APK before explicit `FIX JADI`.
 - Remaining verification: review API parsing/location fallbacks and visual layout; test on target Android TV; capture a genuine TV screenshot before promoting the theme from draft. No fake screenshot will be created.
+
+
+### Execution update — 2026-10-23 (continued)
+- Added remote-friendly Indonesian city presets to the native DemiPanel location settings on launcher branch `feature/forest-green-home-widgets` (commit `4496d17d19fd3acf2f75bc4b2d50a76feb9369e7`). Presets include Jakarta, Bandung, Surabaya, Yogyakarta, Semarang, Surakarta, Medan, Makassar, Denpasar, Palembang, Balikpapan, Banjarmasin, Pontianak, Manado, Mataram, and Banda Aceh. Choosing a preset fills editable location name and coordinates; saving continues to persist a manual location without changing Android system time or time zone.
+- Important limitation: automatic TV location still depends on the Android fine-location permission being granted and a TV location provider having a last-known fix. This code path does not request runtime permission. The city preset is a practical manual fallback, not proof that auto-location works on the target TV.
+- The new commit has been saved to the working branch. No workflow run was returned for that commit at the time of inspection; therefore its CI status is **not yet verified**. Do not infer passing tests from earlier commits.
+- No APK assembled, no PR merged. Release gate remains: build/package only after the user explicitly says `FIX JADI`.
