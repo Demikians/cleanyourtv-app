@@ -227,10 +227,15 @@ Every new request is recorded here before implementation. Keep a short checklist
 
 ### Execution log — 2026-10-23
 - Created launcher working branch `Demikians/cleanyourtv:feature/forest-green-home-widgets` from the user's `demikians-overdrive` branch.
-- Initial implementation slice committed: `activity_main.xml` now shows the CleanYourTV Forest Edition tagline and uses restrained emerald header/calendar accents; launcher default background is deep forest; cinematic backdrop and ambient glow default off; dock auto-fill defaults off so missing pinned apps do not silently become favorites.
+- Implemented the first visual/configuration slice: `activity_main.xml` shows the CleanYourTV Forest Edition tagline and restrained emerald accents; default background is deep forest; cinematic backdrop and ambient glow default off; dock auto-fill defaults off.
+- Theme preset `themes/overdrive/config.json` now uses fixed emerald `#8FBF9F`, 70% dock opacity, no extra network/input pills, and no app-library home entry. Four pinned favorite slots remain configured.
+- Added hidden compatibility IDs to `layout-iw/activity_main.xml` for `brandTagline`, `miniCalendarTitle`, and `miniCalendarGrid`.
 - Draft review: https://github.com/Demikians/cleanyourtv/pull/1
-- This is explicitly an initial slice, not a completed release. Prayer-time API, Maghrib countdown, Quran Arabic/translation panel, persistent manual location selection, cache/error states, and regression/build verification remain unimplemented/unverified.
-- Environment limitation: this execution session could not clone GitHub via the shell because DNS/network access to github.com was unavailable. GitHub connector writes succeeded, but this session has not run Gradle tests or built the app.
+- The launcher fork already contains native `DemiPanel` code for Aladhan prayer times (method 20, school 0), Maghrib countdown, MyQuran Arabic/Indonesian verse, local cache/stale states, and a TV-friendly location/settings dialog. Presence in source is not proof of correct runtime behavior; location fallback, response parsing, cache correctness, and layout still require review and target-TV validation.
+- Latest checks for commit `19a4abe8f4234f90eeabe22412d09476db6a379e`: workflow run `39988204398` (lists/tools/docs and launcher unit tests/lint) passed; workflow run `39988204414` (unit tests and lint) passed. Both workflows skipped APK assembly.
+- Historical legacy CI run `39984424318` failed a 480 KB APK-size gate (482 KB) and documentation/resource checks. The current implementation workflow intentionally does not assemble an APK.
+- Shell clone was unavailable due network/DNS constraints; GitHub connector is being used to inspect and update source files.
+- Remaining work: review prayer/Quran API parsing and location behavior, verify visual layout and right-side panel constraints, reconcile any stale status notes, and validate on the actual Android TV. Theme remains draft until a genuine TV screenshot is captured; no screenshot will be fabricated.
 - Release gate unchanged: no APK until explicit “FIX JADI”.
 
 ### Execution correction and verification — 2026-10-23 late
