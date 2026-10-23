@@ -271,3 +271,10 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Quran display currently attributes text only to “MyQuran API v3”; the source audit has not yet established the translation edition/version and reuse attribution requirements. Keep this as an unresolved verification item; do not imply the translation license is confirmed.
 - Current location detection remains best-effort last-known location only when fine-location permission is already granted; no runtime permission prompt is implemented. Manual city selection remains the fallback. This needs clear status/target-TV validation, not a fabricated “auto detected” claim.
 - No APK built, no PR merged. Target Android TV visual/runtime validation and genuine screenshot remain outstanding. Release gate unchanged: no APK until explicit user phrase `FIX JADI`.
+
+
+### User clarification — 2026-10-23 (TV location is authoritative)
+- User explicitly clarified that both prayer schedule and Maghrib countdown must use the TV's own location.
+- Treat the TV's detected coordinates as the primary source when Android grants location access and a valid location fix is available. Manual city/coordinates are only a fallback when TV location is unavailable; never silently present fallback coordinates as detected TV location.
+- Prayer schedule and countdown must share the same location and location-local date/time semantics. Do not change Android's system clock or time zone to achieve this. The current implementation's use of `ZoneId.systemDefault()`, `LocalDate.now()`, and `LocalTime.now()` alongside selected coordinates can cause a mismatch if the TV's system timezone differs from the TV's physical location. Fix and test this before declaring the location/countdown path complete.
+- Location capability limitation remains: current auto-detection reads last-known coordinates only if fine-location permission is already granted; it does not request runtime permission. If unavailable, explain this clearly and offer the persistent manual fallback.
