@@ -254,3 +254,11 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Important limitation: automatic TV location still depends on the Android fine-location permission being granted and a TV location provider having a last-known fix. This code path does not request runtime permission. The city preset is a practical manual fallback, not proof that auto-location works on the target TV.
 - The new commit has been saved to the working branch. No workflow run was returned for that commit at the time of inspection; therefore its CI status is **not yet verified**. Do not infer passing tests from earlier commits.
 - No APK assembled, no PR merged. Release gate remains: build/package only after the user explicitly says `FIX JADI`.
+
+
+### Execution update — 2026-10-23 (CI completion and compact clock)
+- Confirmed CI for launcher commit `aff334593c232d1b87f88a59cd2070de283c720e`: both `Overdrive source validation` and `CI` completed successfully. Jobs passed: `Unit tests and lint (no APK)`, `Launcher unit tests and lint (no APK)`, and `Lists, tools and docs`. This is source-level automated validation only; it does not prove target-TV visual/runtime behavior.
+- Verified the MyQuran v3 documentation describes `GET /quran/{surah}/{ayah}` with `status`, `data.surah_number`, `data.ayah_number`, `data.arab`, and `data.translation`, matching the current parser assumptions. This verifies documented schema, not live endpoint availability or translation licensing/attribution.
+- User-approved clock/date refinement: left-side placement is acceptable; compactness and minimalism matter more than moving the clock to the right.
+- Implemented a narrow layout change on launcher branch `feature/forest-green-home-widgets`, commit `d814a876fede775dd730b39a0088f4013f53b77a`: clock font 52sp→38sp, AM/PM 15sp→12sp, date 14sp→12sp, calendar title 11sp→10sp, and reduced related spacing. This has not yet had CI verification; check the new commit's workflow before treating it as validated.
+- No APK built; no PR merge. Actual Android TV visual testing remains outstanding.
