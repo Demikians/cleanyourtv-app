@@ -114,3 +114,47 @@ Unless the user approves a change after the audit, do not alter:
 ## 10. Change-control rule
 
 Every new request is recorded here before implementation. Keep a short checklist of newly requested work, mark decisions as proposed or locked, and do not mark an item complete without evidence. When starting a later session, read this file and summarize the current state before making changes. This file is the persistent project reference; conversational memory alone is not sufficient.
+
+
+## 11. Source audit — 2026-10-23 (read-only; implementation not started)
+
+### Repository relationship
+- App repository: `Demikians/cleanyourtv-app`.
+- `.gitmodules` links `third_party/cleanyourtv` to upstream `https://github.com/Gathin23/cleanyourtv.git`.
+- Audited upstream launcher paths directly on its `main` branch. The app repository's submodule checkout/revision must be verified before implementation so edits target the intended pinned source and are not accidentally lost on submodule update.
+- The launcher source is a native Android Java app (not Jetpack Compose): `MainActivity.java`, XML layout/resources, `Config.java`, and a theme overlay system.
+
+### Confirmed existing components
+- `launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java`: Home-screen orchestration, app grid/dock, focus behavior, clock-related state, network/status elements, and integration with wallpaper. Primary UI integration point; large file and therefore high regression risk.
+- `launcher/app/src/main/res/layout/activity_main.xml`: root `FrameLayout`, sky/ambient layers, and pre-existing optional race panel. Must inspect the entire layout and MainActivity's programmatic view creation before choosing exact insertion points.
+- `launcher/app/src/main/java/com/gathin/tvhome/Config.java` and `launcher/app/src/main/res/values/config.xml`: existing built-in settings and optional JSON theme overlay. Existing config has a default four-entry dock list, but `fill_dock=true` and the normal grid mean this does NOT yet guarantee exactly four favorites on screen.
+- `launcher/app/src/main/java/com/gathin/tvhome/WallpaperPlayer.java`: local theme wallpaper collection, rotation, background decode executor, RGB_565 by default, and wallpaper dimming. This supports reusing the current wallpaper pipeline rather than introducing a second full-screen bitmap path.
+- `launcher/app/src/main/java/com/gathin/tvhome/LauncherSettingsActivity.java` and `launcher/app/src/main/res/layout/activity_launcher_settings.xml`: remote-friendly launcher settings, including columns, rows below dock, dock opacity, animations/effects and wallpaper choice. Any new manual location selection needs an accessible, remote-friendly settings surface, but should not overload unrelated existing controls.
+- `launcher/app/src/main/AndroidManifest.xml`: existing `ACCESS_FINE_LOCATION` permission is documented as used for Wi-Fi network-name display and granted through a setup script; this does NOT prove runtime location permission flow is correctly available for automatic location detection on all target TVs.
+- `launcher/app/build.gradle`: Android application, compile/target SDK 34, min SDK 26, Java 17; currently lean dependency set (RecyclerView, dynamic animation, JUnit). New data/network code should avoid unnecessary heavy libraries.
+- Existing system clock/screensaver code: `ClockActivity.java` and `ClockScene.java`; verify MainActivity's clock implementation separately before changing it.
+
+### Prayer-time and Quran source findings
+- Upstream has a separate `addons/prayer-times` app. Its README and code explicitly use the Aladhan API, with coordinates and method hard-coded in `addons/prayer-times/app/src/main/res/values/config.xml`; current default is Casablanca, Morocco, calculation method 21.
+- That add-on is a full-screen standalone prayer-time app, not the fixed right-side launcher widget requested here. It reads today's times from Aladhan when opened and after midnight, refreshes its countdown each minute, and retains prior display when a fetch fails.
+- The add-on does NOT currently implement the approved Indonesian Kemenag RI source requirement, automatic device location, manual persistent city selector, or the integrated fixed right-side widget. Do not reuse its output as if it were Kemenag-verified. It is reference material for basic fetch/countdown/failure patterns only.
+- A recursive upstream tree search found no Quran/verse add-on by name. The daily Quran verse source, license/attribution, translation, and offline/failure behavior remain to be researched before implementation.
+- No Kemenag API/source has been verified in this read-only audit. The source/method remains a blocking technical research item; do not implement prayer-time values from guesses.
+
+### File-by-file implementation plan (proposed, pending completion of source/data audit)
+1. `launcher/app/src/main/res/layout/activity_main.xml` — reserve explicit layout regions for top-left brand, top-right system clock/date, wallpaper-led center, lower four-slot favorite row, and fixed right widget column. Remove/hide any poster/recommendation UI if present after full-layout inspection. Verification: 16:9 bounds, no overlap at supported sizes, central negative space remains large.
+2. `launcher/app/src/main/java/com/gathin/tvhome/MainActivity.java` — wire the approved view structure into existing home lifecycle; keep app launching, D-pad focus, settings/rebuild, wallpaper lifecycle, and recovery behavior. Ensure fixed widgets do not affect focus traversal unless intentionally selectable. High risk: test remote navigation and app launching on each change.
+3. `launcher/app/src/main/java/com/gathin/tvhome/Config.java` and `launcher/app/src/main/res/values/config.xml` — only add configuration keys genuinely required for the agreed layout/theme/location behavior. Ensure defaults are safe and theme overlay parsing remains backward compatible.
+4. `launcher/app/src/main/java/com/gathin/tvhome/WallpaperPlayer.java` — initially reuse without modifying; change only if audit proves wallpaper sizing/lifecycle needs an explicit adaptation. Verify no duplicate full-screen bitmap allocations and correct cleanup.
+5. `launcher/app/src/main/java/com/gathin/tvhome/LauncherSettingsActivity.java` plus `launcher/app/src/main/res/layout/activity_launcher_settings.xml` — add a remote-friendly manual city/location selector only after the authoritative schedule source and city model are chosen; persist selection and provide an explicit auto-detect/manual fallback status. Avoid silently changing system time/time zone.
+6. New small Java helper(s), names to be finalized after data-source verification — isolate location permission/fallback, Kemenag-aligned schedule retrieval/cache, Maghrib countdown, and Quran verse retrieval/cache. Keep network operations off the main thread, set timeouts, cache safely, and expose clear unavailable states. Avoid embedding invented endpoints or claiming an unverified API is official.
+7. `launcher/app/src/main/AndroidManifest.xml` — add only the permissions actually needed after checking target Android TV runtime behavior. Verify installation and operation without granted location; manual selector must remain functional.
+8. `launcher/app/src/test/java/...` — add unit tests for countdown boundary cases (including after Maghrib/next day), parsing/validation of schedule and verse responses, fallback/cache handling, and layout/config invariants where practical.
+9. Theme/config sample and screenshots/docs — document Forest Green values and agreed layout; provide before/after reference and actual TV screenshots when hardware verification is available. Existing upstream theme screenshots are not evidence for the new design.
+
+### Audit gaps before code changes
+- Finish reading all of MainActivity and the full activity_main.xml, identify exact current clock/date and app-dock view construction, and inspect existing app sorting/dock fallback.
+- Verify the app repository's exact submodule gitlink SHA and branch strategy; do not edit upstream `main` blindly if the project expects a fork/feature branch.
+- Research and verify a usable Kemenag RI schedule source/method and the daily Quran verse source; establish attribution, network/cache policy, and city resolution before choosing APIs.
+- Check existing tests and build scripts, then prepare an exact diff plan and dependency graph.
+- No source code has been edited, no build/test has been run, and no APK has been built during this audit.
