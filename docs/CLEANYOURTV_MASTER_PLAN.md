@@ -188,3 +188,25 @@ Every new request is recorded here before implementation. Keep a short checklist
 - `.gitmodules` confirms the source URL is `https://github.com/Gathin23/cleanyourtv.git`.
 - The prior UI inspection read upstream `main`; this is not yet proof that the pinned commit has identical contents. Before editing, compare the pinned commit against upstream `main` and target the intended project-owned fork/branch rather than pushing directly to upstream `main`.
 - The app repository currently exposes only the `main` branch. No launcher source files have been edited.
+
+
+### Follow-up audit — exact pinned launcher revision and locked prayer source (2026-10-23)
+- Inspected the exact launcher submodule gitlink commit `9071ec8d2f41826778f6b4c7f5f42dadc22f5b22`, not just upstream `main`. The commit is real and includes `MainActivity.java`, `activity_main.xml`, `Config.java`, `config.xml`, settings, wallpaper code, and JVM unit tests.
+- MainActivity is a large Java activity (~120 KB at the pinned revision) that programmatically wires app-grid/dock focus, wallpaper, greeting/clock, Wi-Fi/status and optional feature panels. It is a high-regression-risk integration point; keep changes narrow and add tests for logic extracted to small helpers.
+- `activity_main.xml` is a FrameLayout root with multiple existing layers/regions; this is not a clean empty template. Need map all view IDs/constraints and programmatically added views before finalizing XML edits.
+- Existing dock configuration has four default app package names, but `fill_dock=true` deliberately fills free dock slots with grid apps if a pinned app is absent or fewer than the columns are configured. Thus the four-slot visual requirement needs explicit behavior and tests, not just changing the list.
+- Existing grid navigation and dock-slot tests are present (`GridNavigationTest.java`, `DockSlotsTest.java`); preserve their invariants and extend tests around any changed focus/slot behavior.
+- MainActivity already has device clock validity checks and updates clock/greeting using system time. Avoid coupling prayer location to system time zone. Existing network-state permissions do not establish that the app has `INTERNET` permission; confirm manifest declarations before adding API calls.
+- Existing settings activity has remote-friendly controls for columns, rows below dock, wallpaper, animation/effects, but no location selector. Wallpaper settings already exist; reuse the existing wallpaper selection and `WallpaperPlayer` pipeline.
+- The source tree includes a dedicated `addons/prayer-times` module, but it is a separate full-screen app with Morocco defaults (method 21), not the requested integrated Indonesian widget. Do not transplant its default coordinates/method.
+- Existing manifest has `ACCESS_FINE_LOCATION` but that alone does not guarantee location can be detected on a TV or that runtime permission is granted. The location flow must gracefully fall back to manual selection.
+- **User-approved source choice overrides the earlier open research question:** use Aladhan API with `method=20` (KEMENAG) and `school=0` (Shafi/standard) for prayer calculations. Aladhan documentation confirms method 20's label and warns timings may differ from local mosque/government schedules. Do not describe these results as guaranteed exact copies of official Kemenag tables. Keep location, timezone, cache, timeout, and stale/error behavior explicit.
+- Official-table alternatives are not being substituted behind the user's back. If future testing shows unacceptable discrepancies, report them and ask before changing the approved source.
+- Research for the Quran verse/translation remains open; do not use invented text, translation, or references.
+
+### Implementation remains blocked on finishing the audit, not on another user decision
+1. Complete a view-ID and lifecycle map for the pinned MainActivity and full XML, including exact code paths that populate dock/grid and clock/date/status.
+2. Inspect theme JSON overlay parsing and settings persistence interactions, plus existing Gradle/test setup.
+3. Verify Quran source, Indonesian translation license/attribution, API availability, offline cache and daily rotation semantics.
+4. Prepare a concrete file-by-file diff plan with test cases before source edits.
+5. No source files have been edited. No build, tests, or APK packaging have been run.
