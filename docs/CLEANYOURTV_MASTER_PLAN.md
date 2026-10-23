@@ -232,3 +232,12 @@ Every new request is recorded here before implementation. Keep a short checklist
 - This is explicitly an initial slice, not a completed release. Prayer-time API, Maghrib countdown, Quran Arabic/translation panel, persistent manual location selection, cache/error states, and regression/build verification remain unimplemented/unverified.
 - Environment limitation: this execution session could not clone GitHub via the shell because DNS/network access to github.com was unavailable. GitHub connector writes succeeded, but this session has not run Gradle tests or built the app.
 - Release gate unchanged: no APK until explicit “FIX JADI”.
+
+### Execution correction and verification — 2026-10-23 late
+- Corrected earlier status wording: the selected launcher fork already contains a native `DemiPanel` implementation for prayer times, Maghrib countdown, MyQuran Arabic/Indonesian verse, local caching, stale/error handling, and a TV-friendly settings dialog. These features are present in source; runtime correctness and API behavior still require code-path review and validation on the target TV.
+- Fixed the Hebrew resource contract by restoring the required `brandTagline`, `miniCalendarTitle`, and `miniCalendarGrid` view IDs in `layout-iw/activity_main.xml` as hidden compatibility views.
+- Tightened `themes/overdrive/config.json`: `fill_dock=false`, fixed emerald accent, dock opacity reduced to 70, and extra network/input pills plus app-library home entry disabled for a quieter four-favorite home.
+- Verified GitHub Actions for commit `db55bd6cb8b8fc73ae6756571f7b12d358983ad4`: source/docs tests passed; Android `testReleaseUnitTest` and `lintRelease` passed. Release APK assembly was skipped.
+- A newer workflow is running for commit `19a4abe8f4234f90eeabe22412d09476db6a379e`; check its final result before treating the current config changes as fully verified.
+- Previous legacy CI run produced a 482 KB release APK and failed its 480 KB size gate. That run used an older workflow; the current PR workflow does not assemble APKs. Do not build an APK before explicit `FIX JADI`.
+- Remaining verification: review API parsing/location fallbacks and visual layout; test on target Android TV; capture a genuine TV screenshot before promoting the theme from draft. No fake screenshot will be created.
