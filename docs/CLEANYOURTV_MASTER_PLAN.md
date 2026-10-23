@@ -224,3 +224,11 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Data-source verification references: https://aladhan.com/prayer-times-api ; https://aladhan.com/calculation-methods ; https://quranenc.com/id/browse/indonesian_affairs ; https://quranenc.com/sw/home/api ; https://api.myquran.com/doc
 - User confirmed there are no additional design decisions to discuss. Continue with implementation and verification without asking for non-blocking preferences. Any genuinely unavailable external credential, unsupported TV capability, or failed verification must be reported accurately and must not be worked around with fabricated data.
 - Release gate unchanged: do not build/package an APK until the user explicitly says “FIX JADI”.
+
+### Execution log — 2026-10-23
+- Created launcher working branch `Demikians/cleanyourtv:feature/forest-green-home-widgets` from the user's `demikians-overdrive` branch.
+- Initial implementation slice committed: `activity_main.xml` now shows the CleanYourTV Forest Edition tagline and uses restrained emerald header/calendar accents; launcher default background is deep forest; cinematic backdrop and ambient glow default off; dock auto-fill defaults off so missing pinned apps do not silently become favorites.
+- Draft review: https://github.com/Demikians/cleanyourtv/pull/1
+- This is explicitly an initial slice, not a completed release. Prayer-time API, Maghrib countdown, Quran Arabic/translation panel, persistent manual location selection, cache/error states, and regression/build verification remain unimplemented/unverified.
+- Environment limitation: this execution session could not clone GitHub via the shell because DNS/network access to github.com was unavailable. GitHub connector writes succeeded, but this session has not run Gradle tests or built the app.
+- Release gate unchanged: no APK until explicit “FIX JADI”.
