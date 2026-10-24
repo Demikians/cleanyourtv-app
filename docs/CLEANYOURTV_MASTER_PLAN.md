@@ -311,3 +311,11 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Live docs and sample API payload were inspected: https://quranenc.com/sw/home/api and https://quranenc.com/api/v1/translation/aya/english_saheeh/1/1. API sample is a structural check, not an Indonesian-verse correctness test. The live Indonesian endpoint still needs runtime validation from the app/CI or device.
 - Remaining validation: confirm build/lint CI after this commit; check UI truncation for the longer attribution line; verify fallback/cache behavior when catalog or verse request fails; confirm QuranEnc reuse requirements against final display (including treatment of any footnotes/transcript information); test on Android TV.
 - APK build remains blocked until user explicitly says `FIX JADI`; PR remains draft and must not be merged without authorization.
+
+
+## UI refinement decision — 2026-10-25 (TV 32-inch viewing distance)
+- User approved the direction to simplify the Forest Edition preview: remove the full-month mini calendar because the clock already has a date line; keep the left side spacious.
+- Merge the Maghrib countdown into the prayer-times card as a compact secondary row. Do not give countdown its own full-size card.
+- Reduce the daily Quran panel to approximately the prayer-card visual weight, allowing it to be slightly taller only when needed for legible Arabic and a short Indonesian translation. Preserve source/publisher/version attribution in a compact readable line and clamp long translation text rather than letting the panel dominate the screen.
+- Design for a 32-inch Android TV viewed from about 2 metres, not for a phone. Verify typography and D-pad focus at the actual TV resolution before considering UI work complete.
+- The revised HTML file is a conceptual simulation only; it does not constitute implementation in the Android launcher. No APK build before explicit user approval: `FIX JADI`. PR stays draft and unmerged.
