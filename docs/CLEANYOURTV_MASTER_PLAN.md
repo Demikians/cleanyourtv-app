@@ -370,3 +370,10 @@ Every new request is recorded here before implementation. Keep a short checklist
 - No APK build/package/release before explicit `FIX JADI`.
 
 - **Pin refreshed after final subtitle fallback correction:** launcher commit `92ac4c554b238c3c186f245088b0a696cd3dc9b0` now contains the exact approved subtitle even when no external theme overlay is loaded. The app gitlink was updated to this exact commit in app commit `cfdb2aca7b9ff2c459583dd195946df38e2d330c`; this supersedes the earlier pin `7794bd90f46d61aa2b7b643c30e8cce978d79b9d`.
+
+## Core-layout correction — compact calendar restored — 2026-10-25
+
+- The approved requirements call for a **small calendar close to the clock/date**. The native Forest layout had removed the calendar and the existing renderer was no longer initialized; that contradicted the core layout requirement.
+- Restored the small month title/grid in `activity_main.xml`, reconnected `buildMiniCalendar()` and `updateMiniCalendar()` in `MainActivity`, and reduced cell dimensions to 18×12 dp for weekday headers and 18×14 dp for date cells. It is non-focusable and uses the emerald marker for today. The TV layout still needs real-device spacing/legibility validation.
+- Launcher commits: layout `aceec4e5eb3ff617158a36d1e1b2e9581b6a0c60`, renderer initialization `7ed614dc02a007d9dc4e0d93a57b77d578bc3304`, comment cleanup `1c15d0c47a3ee6d59cdb2338ad5c6620a0061b54`.
+- The app repository submodule was advanced to that exact launcher commit in app commit `dc32b903d5f740d78034d8288e79c004ba897475`; source pointer verified. This does not replace CI or real-TV validation.
