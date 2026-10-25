@@ -18,7 +18,7 @@ This file is a living specification. Update it when the user makes a new decisio
 - Theme: **Forest Green — Natural & Fresh**, with a dark green base and restrained emerald accents.
 - Premium, calm, minimal, clean, lightweight; avoid excessive glow, noisy decoration, or visually loud elements.
 - The wallpaper must remain a visible focal point. Preserve a large, deliberately empty central area so the wallpaper can breathe.
-- Previous project context also specifies a 16:9 Android TV layout, original DK logo at top-left, title **“DEMI KIANZ × NERO”**, subtitle **“CleanYourTV · Forest Edition”**, and selectable wallpaper from TV storage. Verify these against the latest source and existing agreed design during audit; do not casually discard them.
+- Previous project context also specifies a 16:9 Android TV layout, original DK logo at top-left, title **“DEMI KIANZ × NERO”**, subtitle **“Stay in your zone • Live in balance”**, and selectable wallpaper from TV storage. Verify these against the latest source and existing agreed design during audit; do not casually discard them.
 - Target device context previously discussed: 32-inch Android TV 11 with 1 GB RAM. Treat lightweight performance and low memory use as important constraints; confirm current target assumptions during audit if necessary.
 
 ## 3. Home-screen layout decisions
@@ -340,3 +340,12 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Important integration gap: `Demikians/cleanyourtv-app/.gitmodules` still points `third_party/cleanyourtv` at `Gathin23/cleanyourtv.git`; its pinned gitlink was previously recorded as `9071ec8d2f41826778f6b4c7f5f42dadc22f5b22`. The Forest source branch lives in `Demikians/cleanyourtv` and is not yet proven to be the exact source revision consumed by the app repository. Resolve and verify the app/submodule integration before calling the app-ready.
 - Still outstanding: inspect/validate QuranEnc live Indonesian catalog and version/attribution on-device; ensure long publisher/version text remains readable at TV distance; verify manual/auto location behavior and prayer cache on a TV; run source validation/Android unit tests/lint on the latest commit; review fixed widget layout, four lower favorites, remote focus, and low-memory behavior on the target 32-inch Android TV. Do not claim hardware verification without a real TV run.
 - Hard release gate remains unchanged: **do not build, package, or release an APK until the user explicitly says `FIX JADI`**, and only after all agreed work and checks are complete.
+
+
+## Approved branding correction — 2026-10-25
+
+- The visible subtitle under the brand must be exactly **“Stay in your zone • Live in balance”**.
+- **Do not display “CleanYourTV · Forest Edition” as the subtitle**; it is a technical theme label, not part of the approved on-screen identity.
+- Native layout default and `themes/overdrive/config.json` have both been corrected on `Demikians/cleanyourtv:feature/forest-green-home-widgets` (layout commit `0ca7ef290465699218ee7a7e1b3598a447a7a544`, theme config commit `4a59b41b6c8061a9fd57e77ec5c9a8646f911417`). Theme README wording was corrected in `88d4b0958835ba9f2739c7fa02ca87eb7071c2bb`.
+- Integration blocker remains: `Demikians/cleanyourtv-app` currently pins the upstream launcher as a submodule, and the Forest branch is not yet proven to be the revision that the companion app actually embeds. Do not mark integration complete until the submodule URL and gitlink point to the reviewed Forest source revision and the app workflow verifies that exact revision.
+- Validation remains source-only. No APK build/package/release before the explicit `FIX JADI` instruction.
