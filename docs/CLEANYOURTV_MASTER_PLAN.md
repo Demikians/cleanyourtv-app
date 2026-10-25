@@ -360,3 +360,11 @@ Every new request is recorded here before implementation. Keep a short checklist
 - Remaining integration blocker: `Demikians/cleanyourtv-app` still pins `third_party/cleanyourtv` as a submodule from upstream `Gathin23/cleanyourtv`; this app's embedded launcher has not yet been verified to use the Forest branch's latest reviewed commit. Fix the submodule URL/gitlink before declaring the phone app and launcher integration complete.
 - Keep the approved core: landscape 16:9, clean/lightweight wallpaper-led layout, adaptive wallpaper palette, four lower favorites, compact clock/date and system stats, fixed right-side prayer schedule/Maghrib countdown/daily Quran panel, reliable D-pad, and preserved recovery/debloat safeguards. Preview HTML is secondary.
 - No APK build, package or release before the explicit `FIX JADI` instruction.
+
+
+## Integration follow-through — 2026-10-25
+
+- **Resolved the app/submodule source mismatch in repository configuration.** `.gitmodules` now points `third_party/cleanyourtv` to `https://github.com/Demikians/cleanyourtv.git` (commit `2573e0f8a8b269b32b0bf5064f73b718aee4483e`).
+- The app repository's gitlink now pins `third_party/cleanyourtv` to reviewed Forest branch commit `7794bd90f46d61aa2b7b643c30e8cce978d79b9d` (commit `ae10c95bfd932346c594f8b87f44b09143de49e1`). Verified the current app tree points to that exact gitlink.
+- This resolves the **source pointer** mismatch, but does not prove the app compiles or that the TV behavior is correct. Latest app commit has no reported CI status/workflow run in the available GitHub results; run/check app tests and launcher unit tests/lint before marking validation complete.
+- No APK build/package/release before explicit `FIX JADI`.
