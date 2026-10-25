@@ -379,3 +379,13 @@ Every new request is recorded here before implementation. Keep a short checklist
 - The app repository submodule was advanced to that exact launcher commit in app commit `dc32b903d5f740d78034d8288e79c004ba897475`; source pointer verified. This does not replace CI or real-TV validation.
 
 - **Latest accent-refresh fix:** the minute-by-minute greeting refresh was still resetting the brand title to fixed emerald after wallpaper palette sampling. It now preserves the sampled accent (or festive accent when active) in launcher commit `d68e40082f6170ba5e8e0f8d80a4030cf7e86ec3`. App submodule pin updated to that exact commit in app commit `aac61b4b029b868287a53ee0db522f46d1a91356`.
+
+
+## CI failure audit — 2026-10-25
+- Investigated launcher PR CI runs #23 (run ID `40116940583`) and Overdrive validation run #65 (`40116940544`). The documentation/tools job passed; the launcher unit-test/lint job failed during Java compilation.
+- Exact compiler errors were in `MainActivity.java` lines 440–441: `R.id.miniCalendarTitle` and `R.id.miniCalendarGrid` were missing because the mini-calendar views had been removed from `activity_main.xml` while Java still referenced them.
+- The branch was subsequently updated to restore the compact calendar in `activity_main.xml` and re-connect its views in `MainActivity.java`. Current branch source contains both IDs in the default and Hebrew Home layouts; this source correction has not yet been proven by a fresh CI run.
+- Added regression test in launcher commit `564be022ee23527641a6ef4e3687b279b3882f00` to verify that both mini-calendar IDs referenced by `MainActivity` remain present in both Home layout variants.
+- Latest Actions listing still shows only the old failed run at SHA `4c68c6c3465b49abe74de6f3d7e166bcc70bd44a`; no run for the current branch head was visible after the regression-test commit. Do not claim CI is green until a new run completes successfully.
+- The companion app repository has no GitHub Actions runs listed at this time; the confirmed red CI discussed here belongs to the launcher repository's PR. The app's embedded launcher source pointer remains pinned to the Forest branch's source commit recorded above.
+- **No APK was built.** The `FIX JADI` approval gate remains in force.
