@@ -368,3 +368,5 @@ Every new request is recorded here before implementation. Keep a short checklist
 - The app repository's gitlink now pins `third_party/cleanyourtv` to reviewed Forest branch commit `7794bd90f46d61aa2b7b643c30e8cce978d79b9d` (commit `ae10c95bfd932346c594f8b87f44b09143de49e1`). Verified the current app tree points to that exact gitlink.
 - This resolves the **source pointer** mismatch, but does not prove the app compiles or that the TV behavior is correct. Latest app commit has no reported CI status/workflow run in the available GitHub results; run/check app tests and launcher unit tests/lint before marking validation complete.
 - No APK build/package/release before explicit `FIX JADI`.
+
+- **Pin refreshed after final subtitle fallback correction:** launcher commit `92ac4c554b238c3c186f245088b0a696cd3dc9b0` now contains the exact approved subtitle even when no external theme overlay is loaded. The app gitlink was updated to this exact commit in app commit `cfdb2aca7b9ff2c459583dd195946df38e2d330c`; this supersedes the earlier pin `7794bd90f46d61aa2b7b643c30e8cce978d79b9d`.
