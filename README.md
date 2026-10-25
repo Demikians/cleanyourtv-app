@@ -156,7 +156,7 @@ build plus a signature.
 ```bash
 git clone --recurse-submodules https://github.com/udhaykumarbala/cleanyourtv-app.git
 cd cleanyourtv-app
-./gradlew check assembleDebug        # JDK 21 and the Android SDK
+./gradlew check                    # JDK 21 and the Android SDK; validation only, no APK
 ```
 
 A Kotlin and Jetpack Compose app that speaks ADB to the TV itself, with no computer in between.
