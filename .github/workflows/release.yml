@@ -24,6 +24,11 @@ on:
     tags: ["v*"]
   workflow_dispatch:
     inputs:
+      fix_jadi_approved:
+        description: "Required: owner has explicitly approved FIX JADI"
+        type: boolean
+        required: true
+        default: false
       release_tag:
         description: "Verify the signed APK of this GitHub Release (for example v0.2.0) against this run's build"
         required: false
@@ -38,6 +43,7 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name == 'workflow_dispatch' && inputs.fix_jadi_approved == true
     runs-on: ubuntu-latest
     timeout-minutes: 120
     outputs:
